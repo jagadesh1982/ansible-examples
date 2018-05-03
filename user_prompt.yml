@@ -1,0 +1,17 @@
+---
+ - hosts: dev
+   tasks:
+    - name: prompt
+      pause:
+        prompt: "Do you want to install wget (yes/no)?"
+      register: install_wget
+
+    - debug: msg="{{ install_wget }}"
+
+    - name: task two
+      shell: uptime
+      register: uptimeout
+      when:  install_wget.user_input  == "yes"
+      
+
+    - debug: msg="{{ uptimeout }}"
