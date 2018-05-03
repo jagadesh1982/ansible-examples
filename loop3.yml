@@ -1,0 +1,7 @@
+---
+ - hosts: dev
+   tasks:
+    - name: Install package
+      yum: name={{ item.name }} state={{ item.value }}
+      with_items:
+       - {name: "httpd", value: "present"}

@@ -1,0 +1,15 @@
+---
+- hosts: dev
+  tasks:
+    - name: Check HTTPD Packages
+      shell: rpm -qa  | grep httpd
+      register: rpm_status
+      ignore_errors: yes
+
+    - name: check If HTTPD Rpm is Installed
+      debug: msg="Httpd is installed on the remote Machine"
+      when: " 'httpd' in rpm_status.stdout"
+
+    - name: Check if Httpd is installed
+      debug: msg="Httpd is not installed on the remote machine"
+      when: not 'httpd' in rpm_status.stdout

@@ -1,0 +1,10 @@
+---
+ - hosts: dev
+   tasks:
+    - name: execute a Echo Command when the Underlying OS is RHEL
+      shell: /bin/echo "Hello World"
+      when: ansible_os_family == "RedHat"
+
+    - name: execute the value when x86_64
+      shell: uptime
+      when: ansible_machine == "x86_64",

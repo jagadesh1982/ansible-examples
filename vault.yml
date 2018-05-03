@@ -1,0 +1,9 @@
+---
+ - hosts: dev
+   vars_files:
+    - hello.yml 
+   tasks: 
+    - name: value of the name passed
+      shell: echo {{ name }}
+      register: out
+    - debug: msg={{ out }} 

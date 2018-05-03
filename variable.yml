@@ -1,0 +1,10 @@
+---
+ - hosts: dev
+   vars_files:
+    - variable_file.yml 
+   tasks:
+    - name: echo the package_name value
+      shell: /bin/echo {{ package_name }}
+      register: out
+
+    - debug: msg={{ out }}

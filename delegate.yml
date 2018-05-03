@@ -1,0 +1,10 @@
+---
+ - hosts: dev
+   tasks:
+    - name: Install packge
+      yum: name=zenity state=present
+      
+    - name: tell master
+      action: shell echo "Zenity Installed" >> /tmp/zenity
+      sudo: yes
+      delegate_to: 192.168.0.103 

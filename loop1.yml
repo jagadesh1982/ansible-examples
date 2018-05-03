@@ -1,0 +1,8 @@
+---
+ - hosts: dev
+   tasks:
+    - name: Create users
+      shell: useradd {{ item }}
+      with_items: 
+        - hai1
+        - bai1

@@ -1,0 +1,20 @@
+---
+ - hosts: dev
+   tasks:
+    - name: first task
+      shell: uptime
+      register: uptimeout
+ 
+    - debug: msg="{{ uptimeout }}"
+
+    - name: second task
+      shell: ls -alrt /tmp
+      register: listfiles
+
+    - debug: msg="{{ listfiles }}"
+   
+    - name: thrid task
+      file: path=/tmp/helloworld state=directory
+ 
+    - name: fourth task
+      file: path=/tmp/helloworld1 state=touch

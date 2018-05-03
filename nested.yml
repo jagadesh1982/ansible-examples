@@ -1,0 +1,8 @@
+---
+ - hosts: dev 
+   tasks: 
+    - name: nested loop
+      shell: chmod -R {{ item[0] }} {{ item[1] }} 
+      with_nested:
+       - ['755']
+       - ['/tmp/helloworld']

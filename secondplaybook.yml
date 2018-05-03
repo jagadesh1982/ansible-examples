@@ -1,0 +1,11 @@
+---
+ - hosts: dev
+   tasks:
+    - name: Create a file
+      file: path=/tmp/foo.conf state=touch
+
+    - name: create a dir
+      file: path=/tmp/helloworld state=directory
+
+    - name: get up time value
+      shell: uptime

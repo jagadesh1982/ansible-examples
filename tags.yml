@@ -1,0 +1,13 @@
+---
+ - hosts: dev
+   tasks:
+    - name: run echo command
+      shell: /bin/echo "hello"
+      tags:
+       - sample
+   
+    - name: run uptime command
+      shell: uptime
+      tags:
+       - uptime
+ 

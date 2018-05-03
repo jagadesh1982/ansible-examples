@@ -1,0 +1,11 @@
+---
+- hosts: dev
+  tasks:
+    - name: Check for File
+      command: /usr/bin/cat /tmp/hai
+      register:  cat_response
+      ignore_errors: yes
+
+    - name: Stop Futher if File is Not available
+      fail: msg="File is Not available, Please Create the File First"
+      when: cat_response.rc == 2
