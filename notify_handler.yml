@@ -1,0 +1,22 @@
+---
+ - hosts: 127.0.0.1
+   connection: local
+   tasks:
+    - name: Install Apache and notify to restart
+      yum: pkg=httpd state=latest
+      notify:
+       - restart apache
+
+    - name: second notification
+      shell: uptime
+      notify:
+       - restart apache
+
+    - name: thrid notification
+      shell: date
+      notify:
+       - restart apache
+
+   handlers:
+    - name: restart apache
+      service: name=httpd state=restarted
