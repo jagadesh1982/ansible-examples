@@ -5,4 +5,4 @@
         docker: image=ubuntu:latest name=ansible-docker command="ls -l"
 
 
-# for creating container using Docker , first install docker_py using "pip install docker_py"
+# for creating container using Ansible , first install docker_py using "pip install docker_py"
