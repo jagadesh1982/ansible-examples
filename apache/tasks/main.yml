@@ -1,0 +1,20 @@
+---
+ - name: install apache
+   yum: name=httpd state=present
+   notify:
+    - restart apache
+  
+ - name: display user name
+   shell: echo {{ username }}
+   register: user_name
+
+ - debug: msg={{ user_name }}
+
+ - name: Upload template.txt from templates
+   template: src=template.txt  dest=/tmp
+
+ - name: upload file.txt from files
+   copy: src=file.txt dest=/tmp mode=0755
+
+
+ 

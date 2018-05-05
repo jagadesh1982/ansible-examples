@@ -1,0 +1,2 @@
+this is my user name = {{ username }}
+this is my password = {{ password }}

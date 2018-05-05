@@ -1,0 +1,3 @@
+---
+  - name: restart apache
+    shell: service httpd restart

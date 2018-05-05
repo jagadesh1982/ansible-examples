@@ -1,4 +1,7 @@
 ---
  - hosts: dev
    roles:
-    - tomcat
+#   - tomcat
+#   - apache
+
+# un comment the line for the role to execute

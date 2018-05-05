@@ -1,5 +1,5 @@
 ---
- - hosts: all
+ - hosts: dev
    sudo: yes
    tasks:
     - name: Check Up Time

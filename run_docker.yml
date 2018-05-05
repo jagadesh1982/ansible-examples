@@ -1,0 +1,8 @@
+- hosts: localhost
+  connection: local
+  tasks:
+      - name: Run ls -l in a docker container
+        docker: image=ubuntu:latest name=ansible-docker command="ls -l"
+
+
+# for creating container using Docker , first install docker_py using "pip install docker_py"
