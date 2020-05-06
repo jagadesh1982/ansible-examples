@@ -1,0 +1,15 @@
+---
+ - name: install apache 
+   yum: name=httpd  state="{{ package_state }}"  
+   notify:
+    - restart apache
+ 
+ - name: upload httpd.conf location from templates to httpd remote location
+   template: src=httpd.conf dest=/etc/httpd/conf
+   notify:
+    - restart apache
+  
+ - name: upload the index.html file from file directory to /var/www/html location
+   copy: src=index.html dest=/var/www/html
+   notify:
+    - restart apache

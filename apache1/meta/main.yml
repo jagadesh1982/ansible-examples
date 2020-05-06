@@ -1,0 +1,9 @@
+galaxy_info:
+ author: jagadish
+ description: sample apache playbook
+ comapny: nova
+ platform:
+  - name: centos
+    version: 2.2.15
+
+dependencies: [] 
