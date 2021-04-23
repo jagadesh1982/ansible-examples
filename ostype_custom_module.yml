@@ -1,0 +1,8 @@
+---
+ - hosts: dev
+   tasks:
+    - name: Custom module Execution
+      ostype:
+      register: result 
+
+    - debug: var=result
