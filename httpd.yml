@@ -1,0 +1,50 @@
+---
+ - hosts: dev
+   tasks:
+    - name: Install wget package
+      yum: name=wget state=present
+ 
+    - name: Install httpd package
+      yum: name=httpd state=present update_cache=yes
+ 
+    - name: Install apache module
+      apache2_module: state=present name=rewrite
+ 
+    - name: Change the Port number from 80 to 18081 in httpd.conf file
+      lineinfile: dest=/etc/httpd/conf/httpd.conf regexp="^Listen 80" line="Listen 18081" state=present
+ 
+    - name: Create a Virutal Host Directory
+      file: dest=/var/www/example.com/public_html state=directory
+ 
+    - name: Copy the index file
+      copy: src=index.html dest=/var/www/example.com/public_html 
+ 
+    - name: Download the example.conf file from internet to /etc/httpd/conf location
+      get_url: url="https://raw.githubusercontent.com/jagadesh1982/ansible-examples/master/example.conf" dest="/etc/httpd/conf.d/" mode=0777
+ 
+    - name: Disable linux security 
+      selinux: state=disabled
+ 
+    - name: Start the Apache Server
+      service: name=httpd state=restarted
+ 
+    - name: Check if the Service is started by checking the port 18081. we check this port until the port comes up
+      wait_for: host=0.0.0.0 port=18081 delay=10
+ 
+    - name: Check if the website is up and runing
+      uri: url="http://34.229.204.186:18081" status_code=200
+      register: result
+      until: result.status == 200
+      retries: 90
+      delay: 10
+ 
+    - name: Send an email saying httpd is configured
+      mail:
+        host: smtp.gmail.com
+        port: 587
+        username: importantmail82@gmail.com
+        password: "lztciwsjxsgxorgu"
+        to: importantmail82@gmail.com
+        subject: Ansible Report
+        body: System  has been successfully provisioned 
+
