@@ -1,0 +1,10 @@
+---
+ - hosts: dev
+   vars:
+        - key : "/root/.ssh/id_rsa.pub"
+   tasks:
+     - name: "Copy the authorized key file from"
+       authorized_key:
+         user: centos
+         state: present
+         key: "{{ lookup('file', '{{ key }}')}}"

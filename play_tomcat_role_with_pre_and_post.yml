@@ -1,0 +1,9 @@
+---
+ - hosts: dev
+   pre_tasks:
+     - local_action: shell echo 'I":" Beginning to configure Tomcat  web server..' >> /root/role/ansible.log 
+   roles:
+    - tomcat
+   post_tasks:
+     - local_action: shell echo 'I":" Done configuring Tomcat web server...' >> /root/role/ansible.log
+

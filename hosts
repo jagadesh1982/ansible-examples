@@ -3,5 +3,14 @@
 
 
 [test]
-172.16.202.97
-172.16.202.98
+[test]
+172.31.23.13
+ 
+[test:vars]
+ansible_user="Administrator"
+ansible_password="P@wDt3tLDAdUcV6UKx(.fw(Z7X35(@=Z"
+ansible_port="5986"
+ansible_connection="winrm"
+ansible_winrm_transport="basic"
+ansible_winrm_server_cert_validation=ignore
+

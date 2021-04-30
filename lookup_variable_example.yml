@@ -1,0 +1,10 @@
+---
+ - hosts: dev
+   become: true
+   tasks:
+    - name: check
+      shell: cat /tmp/samplefile
+      register: out
+        
+    - name: Show value of 'variablename'
+      debug: msg="{{ lookup('vars', 'ansible_h' + SUDO_USER)}}"

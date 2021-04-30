@@ -1,0 +1,7 @@
+---
+ - name: restart tomcat
+   shell: nohup /usr/local/tomcat/bin/startup.sh &
+
+ - name: port wait
+   wait_for: host=0.0.0.0 port={{ http_port }} 
+

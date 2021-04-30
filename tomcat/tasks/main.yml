@@ -1,0 +1,33 @@
+---
+ - include: install_java.yml
+
+ - name: Run Custom module
+   ostype:
+   register: result 
+
+ - debug: var=result 
+
+ - stat: path=/usr/local/tomcat
+   register: tc
+
+ - name: Download Tomcat
+   get_url: url=http://www-eu.apache.org/dist/tomcat/tomcat-8/v{{ tomcat_version }}/bin/apache-tomcat-{{ tomcat_version }}.tar.gz dest=/tmp mode=0755
+   when: tc.stat.isdir is undefined  
+
+ - name: Unpack Tomcat
+   unarchive: src=/tmp/apache-tomcat-{{ tomcat_version }}.tar.gz dest=/usr/local/ copy=no
+   when: tc.stat.isdir is undefined
+
+ - name: Change Tomcat Directory Name
+   command: mv /usr/local/apache-tomcat-{{ tomcat_version }} /usr/local/tomcat
+   when: tc.stat.isdir is undefined
+
+ - name: Upload server.xml with modified Changes
+   template: src=server.xml dest=/usr/local/tomcat/conf
+   when: tc.stat.isdir is undefined
+          
+ - name: Upload tomcat-users.xml with users added
+   copy: src=tomcat-users.xml  dest=/usr/local/tomcat/conf
+   notify:
+     - restart tomcat
+     - port wait
