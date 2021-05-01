@@ -1,0 +1,9 @@
+---
+ - hosts: dev 
+   tasks:
+      #Call ansible module "userinfo" with parameter "username=testuser"
+    - name: 'Ansible module in shell'
+      action: userinfo username=testuser
+      register: userInfoVariable
+
+    - debug: var=userInfoVariable

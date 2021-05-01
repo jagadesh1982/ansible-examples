@@ -1,0 +1,6 @@
+#!/bin/bash
+
+display="This is a simple bash module.."
+
+echo -e "{\"message\":\""$display"\"}"
+

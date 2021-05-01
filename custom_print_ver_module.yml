@@ -1,0 +1,10 @@
+---
+ - hosts: dev
+   tasks:
+    - name: check version
+      printversion:
+        app: python
+        appv: 2.7
+      register: printversion
+
+    - debug: var=printversion
