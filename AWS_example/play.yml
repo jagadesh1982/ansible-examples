@@ -5,17 +5,20 @@
  
    vars:
     key_name: my_aws
-    region: us-east-2
-    image: ami-074878763a6df7743  # https://cloud-images.ubuntu.com/locator/ec2/
-    id: "doa-app"
+    region: us-east-1
+    image: ami-0affd4508a5d2481b  # https://cloud-images.ubuntu.com/locator/ec2/
+    random_id: "{{ lookup('pipe','date +%Y%m%d%H%M%S') }}"
+    id: "doa-app-{{ random_id }}"
     sec_group: "{{ id }}-sec"
 
    tasks:
     - name: Get instances facts
-      ec2_instance_facts:
+      ec2_instance_info:
         aws_access_key: "{{ec2_access_key}}"
         aws_secret_key: "{{ec2_secret_key}}"
         region: "{{ region }}"
+        filters:
+          instance-state-name: [ "running"]  
       register: result
      
     - name: Instances ID
@@ -31,28 +34,50 @@
         aws_access_key: "{{ec2_access_key}}"
         aws_secret_key: "{{ec2_secret_key}}"
 
-    - name: Provision instance(s)
+    - name: Create instance(s)
       ec2:
         aws_access_key: "{{ec2_access_key}}"
         aws_secret_key: "{{ec2_secret_key}}"
         key_name: "{{ key_name }}"
         id: "{{ id }}"
-        group_id: sg-0dded73db097eacec
+        group_id: sg-0d7e5e13ee7ccc326
         image: "{{ image }}"
         instance_type: t2.micro
-        region: "{{ region }}"
+        region: "{{ region }}" 
+        instance_tags:
+          name: k8s
+        user_data: |
+               #!/bin/sh
+               sudo yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
+               sudo cat <<EOF | sudo tee /etc/yum.repos.d/kubernetes.repo
+               [kubernetes]
+               name=Kubernetes
+               baseurl=https://packages.cloud.google.com/yum/repos/kubernetes-el7-\$basearch
+               enabled=1
+               gpgcheck=1
+               repo_gpgcheck=1
+               gpgkey=https://packages.cloud.google.com/yum/doc/yum-key.gpg https://packages.cloud.google.com/yum/doc/rpm-package-key.gpg
+               exclude=kubelet kubeadm kubectl
+               EOF
+               sudo setenforce 0
+               sudo sed -i 's/^SELINUX=enforcing$/SELINUX=permissive/' /etc/selinux/config
+               sudo modprobe br_netfilter
+               sudo echo "1" > /proc/sys/net/bridge/bridge-nf-call-iptables
+               sudo swapoff -a
+               sudo yum install -y kubelet kubeadm kubectl --disableexcludes=kubernetes docker-ce docker-ce-cli containerd.io
+               sudo systemctl enable --now kubelet
+               sudo mkdir -p /etc/docker
+               sudo touch /etc/docker/daemon.json
+               sudo cat <<EOF | sudo tee /etc/docker/daemon.json 
+               {
+               "exec-opts": ["native.cgroupdriver=systemd"],
+               "log-driver": "json-file",
+               "log-opts": {
+                  "max-size": "100m"
+                },
+               "storage-driver": "overlay2"
+               }
+               EOF
         wait: true
+        wait_timeout: 600  
         count: 1
-
-
-
-
-
-
-
-
-
-
- 
- 
-
