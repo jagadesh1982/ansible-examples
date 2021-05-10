@@ -115,6 +115,7 @@
                sudo swapoff -a
                sudo yum install -y kubelet kubeadm kubectl --disableexcludes=kubernetes docker-ce docker-ce-cli containerd.io
                sudo systemctl enable --now kubelet
+               sudo systemctl enable docker.service
                sudo mkdir -p /etc/docker
                sudo touch /etc/docker/daemon.json
                sudo cat <<EOF | sudo tee /etc/docker/daemon.json 
@@ -127,6 +128,9 @@
                "storage-driver": "overlay2"
                }
                EOF
+               sudo echo "export kubever=$(kubectl version | base64 | tr -d '\n')" >> /tmp/pod-network
+               sudo echo "kubectl apply -f "https://cloud.weave.works/k8s/net?k8s-version=$kubever" >> /tmp/pod-network
+
         wait: true
         wait_timeout: 600
         count: 1 
