@@ -1,0 +1,7 @@
+yum install python3.x86_64*
+python -V
+yum list all | grep python3
+yum install -y python3-libs.x86_64  python3-pip.noarch  python3-setuptools.noarch    
+pip3 install kubernetes --user
+pip3 install openshift --user
+
