@@ -1,0 +1,11 @@
+---
+ - hosts: localhost
+   tasks:
+    - name: run the at command in 1 minute
+      ansible.posix.at:
+        command: ls -d / >/dev/null
+        count: 20
+        units: minutes
+
+
+# at.yml is a ansible scheudler using the native at command. once the playbook is ran, check the job queue using "at -l" command
